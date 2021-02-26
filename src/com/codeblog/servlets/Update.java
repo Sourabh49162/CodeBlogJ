@@ -48,24 +48,28 @@ public class Update extends HttpServlet {
 		String userEmail = request.getParameter("user_email");
 		Part part = request.getPart("user_profile");
 		String profileName = part.getSubmittedFileName();
-
 		HttpSession session = request.getSession();
 		User user = (User) session.getAttribute("currentUser");
 		user.setName(userName);
 		user.setEmail(userEmail);
 		String oldFileName = user.getProfileImg();
+		if (profileName.equals("")) {
+			profileName = oldFileName;
+		}
 		user.setProfileImg(profileName);
 		Connection con = ConnectionProvider.getConnection();
 		UserDao userDao = new UserDao(con);
 		if (userDao.updateUser(user)) {
-			
-			String path = request.getRealPath("/") + "img" + File.separator + "profiles" + File.separator + oldFileName;
-			if (!oldFileName.equals("default.png")) {
-				ProfileManage.deleteProfile(path);
+			if (!profileName.equals(oldFileName)) {
+				String path = request.getRealPath("/") + "img" + File.separator + "profiles" + File.separator
+						+ oldFileName;
+				if (!oldFileName.equals("default.png")) {
+					ProfileManage.deleteProfile(path);
+				}
+				path = request.getRealPath("/") + "img" + File.separator + "profiles" + File.separator
+						+ user.getProfileImg();
+				ProfileManage.saveProfile(part.getInputStream(), path);
 			}
-			path = request.getRealPath("/") + "img" + File.separator + "profiles" + File.separator
-					+ user.getProfileImg();
-			ProfileManage.saveProfile(part.getInputStream(), path);
 			Message msg = new Message("Updated Successfully", "success", "alert-success");
 			session.setAttribute("msg", msg);
 		} else {

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page import="com.codeblog.entities.Message"%>
+<%@ page errorPage="error.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,6 +14,11 @@
 </head>
 <body>
 	<%@include file="navbar.jsp"%>
+	<%
+	if(user1 != null){
+		response.sendRedirect("profile.jsp");
+	}
+	%>
 
 	<main
 		class="d-flex align-items-center primary-background banner-background"

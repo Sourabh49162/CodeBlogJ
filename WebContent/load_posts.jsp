@@ -5,6 +5,7 @@
 <%@ page import="com.codeblog.helpers.ConnectionProvider"%>
 <%@ page import="com.codeblog.daos.PostDao"%>
 <%@ page import="com.codeblog.entities.Post"%>
+<%@ page errorPage="error.jsp"%>
 
 <div class="row">
 	<%
@@ -25,20 +26,16 @@ if(list.size() == 0){
 }
 for (Post post : list) {
 %>
-	<div class="col-md-6">
+	<div class="col-md-6 mt-4">
 		<div class="card" style="width: 18rem;">
 			<img class="card-img-top" src="img/posts/<%= post.getPicture() %>"
 				alt="<%= post.getPicture() %>">
 			<div class="card-body">
 				<h5 class="card-title"><%= post.getTitle() %></h5>
 				<p class="card-text"><%= post.getContent() %></p>
-				<a href="#" class="btn btn-primary">Go somewhere</a>
 			</div>
-			<div class="card-footer primary-background">
-			<a href="#" class="btn btn-primary btn-sm btn-outline-light"><i class="fa fa-thumbs-o-up"><span>20</span></i></a>
-			<a href="#" class="btn btn-primary btn-sm">Read More</a>
-			<input type="hidden" name="post-obj" value="<%= post %>" />
-			<a href="#" class="btn btn-primary btn-sm"><i class="fa fa-commenting-o"><span>20</span></i></a>
+			<div class="card-footer primary-background text-center">
+			<a href="post.jsp?id=<%=post.getId() %>" class="btn btn-sm btn-outline-light mx-2">Read More</a>
 			</div>
 		</div>
 	</div>
